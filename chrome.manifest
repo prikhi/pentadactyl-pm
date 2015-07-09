@@ -1,0 +1,17 @@
+resource dactyl chrome/common/modules/
+resource dactyl-common chrome/common/
+resource dactyl-content chrome/common/content/
+resource dactyl-skin chrome/common/skin/
+resource dactyl-locale chrome/common/locale/
+
+resource dactyl-local chrome/pentadactyl/
+resource dactyl-local-content chrome/pentadactyl/content/
+resource dactyl-local-skin chrome/pentadactyl/skin/
+resource dactyl-local-locale chrome/pentadactyl/locale/
+
+content dactyl chrome/common/content/
+
+component {16dc34f7-6d22-4aa4-a67f-2921fb5dcb69} components/commandline-handler.js
+contract  @mozilla.org/commandlinehandler/general-startup;1?type=dactyl {16dc34f7-6d22-4aa4-a67f-2921fb5dcb69}
+category  command-line-handler m-dactyl @mozilla.org/commandlinehandler/general-startup;1?type=dactyl
+
