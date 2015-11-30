@@ -102,7 +102,7 @@ var Overlay = Module("Overlay", XPCOM([Ci.nsIObserver, Ci.nsISupportsWeakReferen
         if (event === true)
             target = null;
 
-        this.setData(doc, "listeners", listeners.filter(function (args) {
+        this.setData(doc, "listeners", listeners.filter(args => {
             if (target == null || args[0].get() == target && args[1] == event && args[2].wrapped == callback && args[3] == capture) {
                 args[0].get().removeEventListener.apply(args[0].get(), args.slice(1));
                 return false;

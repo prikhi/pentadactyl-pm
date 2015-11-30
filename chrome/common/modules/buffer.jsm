@@ -448,7 +448,7 @@ var Buffer = Module("Buffer", {
                             yield res[i];
         }
 
-        for (let frame in values(this.allFrames(null, true)))
+        for (let frame in values(this.allFrames(undefined, true)))
             for (let elem in followFrame(frame))
                 if (count-- === 0) {
                     if (follow)
@@ -1001,7 +1001,7 @@ var Buffer = Module("Buffer", {
 
         // Ctrl-g single line output
         if (!verbose) {
-            let file = this.win.location.pathname.split("/").pop() || _("buffer.noName");
+            let file = this.win.location.pathname.split("/").pop() || String(_("buffer.noName"));
             let title = this.win.document.title || _("buffer.noTitle");
 
             let info = template.map(
@@ -1424,7 +1424,11 @@ var Buffer = Module("Buffer", {
             if (type === "text/plain")
                 ext = "." + (currExt || "txt");
             else
-                ext = "." + services.mime.getPrimaryExtension(type, currExt);
+                try {
+                    ext = "." + services.mime.getPrimaryExtension(type, currExt);
+                } catch (e) {
+                    ext = currExt ? "." + currExt : "";
+				}
         }
         else if (currExt)
             ext = "." + currExt;
