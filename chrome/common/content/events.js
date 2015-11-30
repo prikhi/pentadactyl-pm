@@ -470,7 +470,7 @@ var Events = Module("events", {
                         .toObject();
 
     outer:
-        for (let [, key] in iter(elements))
+        for (let key of elements)
             if (filters.some(([k, v]) => key.getAttribute(k) == v)) {
                 let keys = { ctrlKey: false, altKey: false, shiftKey: false, metaKey: false };
                 let needed = { ctrlKey: event.ctrlKey, altKey: event.altKey, shiftKey: event.shiftKey, metaKey: event.metaKey };
