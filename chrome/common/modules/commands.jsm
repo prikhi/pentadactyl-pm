@@ -819,13 +819,17 @@ var Commands = Module("commands", {
     /** @property {string} The last executed Ex command line. */
     repeat: null,
 
-    add: function add() {
+    add: function add(names, description, action, extra={}, replace=false) {
+        let { caller } = Components.stack;
+
         let group = this.builtin;
-        if (!util.isDactyl(Components.stack.caller)) {
+        if (!util.isDactyl(caller)) {
             deprecated.warn(add, "commands.add", "group.commands.add");
             group = this.user;
         }
 
+        const { contexts } = this.modules;
+        extra.definedAt = contexts.getCaller(caller);
         return group._add.apply(group, arguments);
     },
     addUserCommand: deprecated("group.commands.add", { get: function addUserCommand() this.user.closure._add }),

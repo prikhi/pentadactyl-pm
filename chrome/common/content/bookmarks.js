@@ -311,14 +311,8 @@ var Bookmarks = Module("bookmarks", {
     getSearchURL: function getSearchURL(text, useDefsearch) {
         let query = (useDefsearch ? options["defsearch"] + " " : "") + text;
 
-        // ripped from Firefox
-        var keyword = query;
-        var param = "";
-        var offset = query.indexOf(" ");
-        if (offset > 0) {
-            keyword = query.substr(0, offset);
-            param = query.substr(offset + 1);
-        }
+        let [keyword, param] = util.split(query, " ", 2);
+        param = param || "";
 
         var engine = Set.has(bookmarks.searchEngines, keyword) && bookmarks.searchEngines[keyword];
         if (engine) {
@@ -409,7 +403,7 @@ var Bookmarks = Module("bookmarks", {
             description: "A comma-separated list of tags",
             completer: function tags(context, args) {
                 context.generate = function () array(b.tags
-                                                     for (b in bookmarkcache)
+                                                     for (b of bookmarkcache)
                                                      if (b.tags))
                                                   .flatten().uniq().array;
                 context.keys = { text: util.identity, description: util.identity };
