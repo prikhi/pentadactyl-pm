@@ -482,7 +482,7 @@ var Events = Module("events", {
                     case "accel":  keys[accel] = true; break;
                     default:       keys[modifier + "Key"] = true; break;
                     case "any":
-                        if (!iter.some(keys, ([k, v]) => v && needed[k]))
+                        if (!iter(keys).some(([k, v]) => v && needed[k]))
                             continue outer;
                         for (let [k, v] in iter(keys)) {
                             if (v)
@@ -626,31 +626,6 @@ var Events = Module("events", {
             if (elem instanceof Element)
                 delete overlay.getData(elem)["focus-allowed"];
         },
-
-        /*
-        onFocus: function onFocus(event) {
-            let elem = event.originalTarget;
-            if (!(elem instanceof Element))
-                return;
-            let win = elem.ownerDocument.defaultView;
-
-            try {
-                util.dump(elem, services.focus.getLastFocusMethod(win) & (0x7000));
-                if (buffer.focusAllowed(win))
-                    win.dactylLastFocus = elem;
-                else if (isinstance(elem, [HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement])) {
-                    if (win.dactylLastFocus)
-                        dactyl.focus(win.dactylLastFocus);
-                    else
-                        elem.blur();
-                }
-            }
-            catch (e) {
-                util.dump(win, String(elem.ownerDocument), String(elem.ownerDocument && elem.ownerDocument.defaultView));
-                util.reportError(e);
-            }
-        },
-        */
 
         input: function onInput(event) {
             event.originalTarget.dactylKeyPress = undefined;

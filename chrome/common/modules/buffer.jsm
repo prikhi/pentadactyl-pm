@@ -28,16 +28,7 @@ lazyRequire("template", ["template"]);
  */
 var Buffer = Module("Buffer", {
     Local: function Local(dactyl, modules, window) ({
-        get win() {
-            return window.content;
-
-            let win = services.focus.focusedWindow;
-            if (!win || win == window || util.topWindow(win) != window)
-                return window.content;
-            if (win.top == window)
-                return win;
-            return win.top;
-        }
+        get win() { return window.content; }
     }),
 
     init: function init(win) {
@@ -110,13 +101,13 @@ var Buffer = Module("Buffer", {
     climbUrlPath: function climbUrlPath(count) {
         let { dactyl } = this.modules;
 
-        let url = this.documentURI.clone();
+        let url = this.uri.clone();
         dactyl.assert(url instanceof Ci.nsIURL);
 
         while (count-- && url.path != "/")
             url.path = url.path.replace(/[^\/]*\/*$/, "");
 
-        dactyl.assert(!url.equals(this.documentURI));
+        dactyl.assert(!url.equals(this.uri));
         dactyl.open(url.spec);
     },
 
@@ -1445,7 +1436,7 @@ var Buffer = Module("Buffer", {
                        _("buffer.save.altText")]);
 
         if (!isinstance(node, Ci.nsIDOMDocument) && node.textContent)
-            names.push([node.textContent,
+            names.push([node.textContent.trim(),
                        _("buffer.save.linkText")]);
 
         names.push([decodeURIComponent(url.replace(/.*?([^\/]*)\/*$/, "$1")),

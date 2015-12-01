@@ -682,7 +682,9 @@ var Option = Class("Option", {
                 // NOTE: Vim doesn't prepend if there's a match in the current value
                 return uniq(Array.concat(values, this.value), true);
             case "-":
-                return this.value.filter(function (item) !Set.has(this, item), Set(values));
+                return this.value.filter(function (item) {
+                    return !Set.has(this, item);
+                }, Set(values));
             case "=":
                 if (invert) {
                     let keepValues = this.value.filter(function (item) !Set.has(this, item), Set(values));
