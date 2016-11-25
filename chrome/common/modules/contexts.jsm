@@ -273,7 +273,7 @@ var Contexts = Module("contexts", {
         }
 
         let path = isRuntime ? file.getRelativeDescriptor(isRuntime) : file.path;
-        let name = isRuntime ? path.replace(/^(plugin|color)s([\\\/])/, "$1$2") : "script-" + path;
+        name = isRuntime ? path.replace(/^(plugin|color)s([\\\/])/, "$1$2") : "script-" + path;
 
         if (!group)
             group = this.addGroup(commands.nameRegexp
@@ -302,7 +302,7 @@ var Contexts = Module("contexts", {
         if (uri instanceof Ci.nsIFileURL)
             var file = File(uri.file);
 
-        let isPlugin = array.nth(io.getRuntimeDirectories("plugins"),
+        isPlugin = array.nth(io.getRuntimeDirectories("plugins"),
                                  dir => dir.contains(file, true),
                                  0);
 

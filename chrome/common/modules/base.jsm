@@ -462,7 +462,7 @@ function curry(fn, length, self, acc) {
         if (args.length == 0)
             return close(self || this, curried);
 
-        let args = acc.concat(args);
+        args = acc.concat(args);
 
         if (args.length >= length)
             return fn.apply(self || this, args);
@@ -947,7 +947,7 @@ Class.prototype = {
     toString: function C_toString() {
         if (this.toStringParams)
             var params = "(" + this.toStringParams.map(m => (isArray(m)  ? "[" + m + "]" :
-                                                             isString(m) ? m.quote() : String(m)))
+                                                             isString(m) ? JSON.stringify(m) : String(m)))
                                    .join(", ") + ")";
         return "[instance " + this.constructor.className + (params || "") + "]";
     },

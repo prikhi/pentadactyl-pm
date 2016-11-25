@@ -1637,8 +1637,9 @@ var Util = Module("Util", XPCOM([Ci.nsIObserver, Ci.nsISupportsWeakReference]), 
      */
     trapErrors: function trapErrors(func, self, ...args) {
         try {
-            if (!callable(func))
+            if (!callable(func)) {
                 func = self[func];
+            }
             return func.apply(self || this, args);
         }
         catch (e) {

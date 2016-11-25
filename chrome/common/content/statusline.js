@@ -10,8 +10,8 @@
 
 var StatusLine = Module("statusline", {
     init: function init() {
-        this._statusLine = document.getElementById("status-bar");
-        this.statusBar = document.getElementById("addon-bar") || this._statusLine;
+        this._statusLine = window.document.getElementById("status-bar");
+        this.statusBar = window.document.getElementById("addon-bar") || this._statusLine;
         this.baseGroup = this.statusBar == this._statusLine ? "StatusLine " : "";
 
         if (this.statusBar.localName == "toolbar") {
@@ -347,7 +347,7 @@ var StatusLine = Module("statusline", {
      */
     updateBufferPosition: function updateBufferPosition(percent) {
         if (percent == null) {
-            let win = document.commandDispatcher.focusedWindow;
+            let win = window.document.commandDispatcher.focusedWindow;
             if (!win)
                 return;
             win.scrollY; // intentional - see Kris

@@ -138,11 +138,11 @@ var IO = Module("io", {
 
                     if (!file.exists() || !file.isReadable() || file.isDirectory()) {
                         if (!params.silent)
-                            dactyl.echoerr(_("io.notReadable", filename.quote()));
+                            dactyl.echoerr(_("io.notReadable", JSON.stringify(filename)));
                         return;
                     }
 
-                    dactyl.echomsg(_("io.sourcing", filename.quote()), 2);
+                    dactyl.echomsg(_("io.sourcing", JSON.stringify(filename)), 2);
 
                     let uri = file.URI;
 
@@ -198,7 +198,7 @@ var IO = Module("io", {
 
                     Set.add(this._scriptNames, file.path);
 
-                    dactyl.echomsg(_("io.sourcingEnd", filename.quote()), 2);
+                    dactyl.echomsg(_("io.sourcingEnd", JSON.stringify(filename)), 2);
                     dactyl.log(_("dactyl.sourced", filename), 3);
 
                     return context;

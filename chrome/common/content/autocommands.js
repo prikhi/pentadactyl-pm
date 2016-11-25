@@ -90,7 +90,7 @@ var AutoCommands = Module("autocommands", {
      */
     list: function (event, regexp, hives) {
 
-        let hives = hives || this.activeHives;
+        hives = hives || this.activeHives;
 
         function cmds(hive) {
             let cmds = {};
@@ -138,7 +138,7 @@ var AutoCommands = Module("autocommands", {
         if (options.get("eventignore").has(event))
             return;
 
-        dactyl.echomsg(_("autocmd.executing", event, "*".quote()), 8);
+        dactyl.echomsg(_("autocmd.executing", event, JSON.stringify("*")), 8);
 
         let lastPattern = null;
         var { url, doc } = args;

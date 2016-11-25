@@ -99,23 +99,23 @@ var Buffer = Module("Buffer", {
     },
 
     climbUrlPath: function climbUrlPath(count) {
-        let { dactyl } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
         let url = this.uri.clone();
-        dactyl.assert(url instanceof Ci.nsIURL);
+        dactyl_.assert(url instanceof Ci.nsIURL);
 
         while (count-- && url.path != "/")
             url.path = url.path.replace(/[^\/]*\/*$/, "");
 
-        dactyl.assert(!url.equals(this.uri));
-        dactyl.open(url.spec);
+        dactyl_.assert(!url.equals(this.uri));
+        dactyl_.open(url.spec);
     },
 
     incrementURL: function incrementURL(count) {
-        let { dactyl } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
         let matches = this.uri.spec.match(/(.*?)(\d+)(\D*)$/);
-        dactyl.assert(matches);
+        dactyl_.assert(matches);
         let oldNum = matches[2];
 
         // disallow negative numbers as trailing numbers are often proceeded by hyphens
@@ -125,7 +125,7 @@ var Buffer = Module("Buffer", {
                 newNum = "0" + newNum;
 
         matches[2] = newNum;
-        dactyl.open(matches.slice(1).join(""));
+        dactyl_.open(matches.slice(1).join(""));
     },
 
     /**
@@ -465,7 +465,7 @@ var Buffer = Module("Buffer", {
      *     {@link dactyl.open}.
      */
     followLink: function followLink(elem, where) {
-        let { dactyl } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
         let doc = elem.ownerDocument;
         let win = doc.defaultView;
@@ -476,7 +476,7 @@ var Buffer = Module("Buffer", {
             return this.focusElement(elem);
 
         if (isinstance(elem, Ci.nsIDOMHTMLLinkElement))
-            return dactyl.open(elem.href, where);
+            return dactyl_.open(elem.href, where);
 
         if (elem instanceof Ci.nsIDOMHTMLAreaElement) { // for imagemap
             let coords = elem.getAttribute("coords").split(",");
@@ -488,21 +488,19 @@ var Buffer = Module("Buffer", {
             return;
         }
 
-        let { dactyl } = this.modules;
-
         let ctrlKey = false, shiftKey = false;
         let button = 0;
-        switch (dactyl.forceTarget || where) {
-        case dactyl.NEW_TAB:
-        case dactyl.NEW_BACKGROUND_TAB:
+        switch (dactyl_.forceTarget || where) {
+        case dactyl_.NEW_TAB:
+        case dactyl_.NEW_BACKGROUND_TAB:
             button = 1;
-            shiftKey = dactyl.forceBackground != null ? dactyl.forceBackground
-                                                      : where != dactyl.NEW_BACKGROUND_TAB;
+            shiftKey = dactyl_.forceBackground != null ? dactyl_.forceBackground
+                                                      : where != dactyl_.NEW_BACKGROUND_TAB;
             break;
-        case dactyl.NEW_WINDOW:
+        case dactyl_.NEW_WINDOW:
             shiftKey = true;
             break;
-        case dactyl.CURRENT_TAB:
+        case dactyl_.CURRENT_TAB:
             break;
         }
 
@@ -647,7 +645,8 @@ var Buffer = Module("Buffer", {
      * @param {boolean} overwrite If true, overwrite any existing file.
      */
     saveLink: function saveLink(elem, overwrite) {
-        let { completion, dactyl, io } = this.modules;
+        let { completion, io } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
         let self = this;
         let doc      = elem.ownerDocument;
@@ -681,7 +680,7 @@ var Buffer = Module("Buffer", {
             }).open();
         }
         catch (e) {
-            dactyl.echoerr(e);
+            dactyl_.echoerr(e);
         }
     },
 
@@ -861,7 +860,7 @@ var Buffer = Module("Buffer", {
         if (win && (win.scrollMaxX > 0 || win.scrollMaxY > 0))
             return win;
 
-        let win = this.focusedFrame;
+        win = this.focusedFrame;
         if (win && (win.scrollMaxX > 0 || win.scrollMaxY > 0))
             return win;
 
@@ -975,9 +974,9 @@ var Buffer = Module("Buffer", {
      * @param {Node} elem The element to query.
      */
     showElementInfo: function showElementInfo(elem) {
-        let { dactyl } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
-        dactyl.echo(["", /*L*/"Element:", ["br"], util.objectToString(elem, true)]);
+        dactyl_.echo(["", /*L*/"Element:", ["br"], util.objectToString(elem, true)]);
     },
 
     /**
@@ -988,7 +987,8 @@ var Buffer = Module("Buffer", {
      * @default The value of 'pageinfo'.
      */
     showPageInfo: function showPageInfo(verbose, sections) {
-        let { commandline, dactyl, options } = this.modules;
+        let { commandline, options } = this.modules;
+        let dactyl_ = this.modules.dactyl;
 
         // Ctrl-g single line output
         if (!verbose) {
@@ -1005,7 +1005,7 @@ var Buffer = Module("Buffer", {
                 info += ", " + _("buffer.bookmarked");
 
             let pageInfoText = [file.quote(), " [", info, "] ", title].join("");
-            dactyl.echo(pageInfoText, commandline.FORCE_SINGLELINE);
+            dactyl_.echo(pageInfoText, commandline.FORCE_SINGLELINE);
             return;
         }
 

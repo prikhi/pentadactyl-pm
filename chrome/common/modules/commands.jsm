@@ -156,7 +156,7 @@ var Command = Class("Command", {
      * @param {Object} modifiers Any modifiers to be passed to {@link #action}.
      */
     execute: function execute(args, modifiers = {}) {
-        const { dactyl } = this.modules;
+        const dactyl_ = this.modules.dactyl;
 
         let context = args.context;
         if (this.deprecated)
@@ -169,7 +169,7 @@ var Command = Class("Command", {
 
         args.doc = this.hive.group.lastDocument;
 
-        return !dactyl.trapErrors(function exec() {
+        return !dactyl_.trapErrors(function exec() {
             let extra = this.hive.argsExtra(args);
 
             for (let k in properties(extra))
@@ -519,7 +519,7 @@ var CommandHive = Class("CommandHive", Contexts.Hive, {
             return { map: map, specs: specs };
         });
 
-        let cached = cache.get(this.cacheKey);
+        cached = cache.get(this.cacheKey);
         if (this.cached) {
             this._specs = cached.specs;
             for (let [k, v] in Iterator(cached.map))
@@ -762,7 +762,7 @@ var Commands = Module("commands", {
             // TODO: allow matching of aliases?
             function cmds(hive) hive._list.filter(cmd => cmd.name.indexOf(filter || "") == 0)
 
-            let hives = (hives || this.userHives).map(h => [h, cmds(h)])
+            hives = (hives || this.userHives).map(h => [h, cmds(h)])
                                                  .filter(([h, c]) => c.length);
 
             let list = ["table", {},
@@ -1070,7 +1070,7 @@ var Commands = Module("commands", {
                             if (sub.indexOf(optname) == 0) {
                                 let count = 0;
                                 let invalid = false;
-                                let arg, quote, quoted;
+                                let arg, quote, quoted, error;
 
                                 let sep = sub[optname.length];
                                 let argString = sub.substr(optname.length + 1);
